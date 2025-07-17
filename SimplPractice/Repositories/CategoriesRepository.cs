@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SimplPractice;
 using SimplPractice.Models;
-using SimplPractice.Repositories.Interfaces;
+using SimplPractice.Interfaces;
 
 
 namespace SimplPractice.Repositories.Implementations
