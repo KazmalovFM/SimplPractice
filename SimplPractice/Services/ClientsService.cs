@@ -1,6 +1,5 @@
 using SimplPractice.Models;
-using SimplPractice.Repositories.Interfaces;
-using SimplPractice.Services.Interfaces;
+using SimplPractice.Interfaces;
 
 namespace SimplPractice.Services.Implementations
 {

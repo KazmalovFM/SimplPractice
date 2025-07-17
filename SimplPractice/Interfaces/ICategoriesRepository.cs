@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SimplPractice.Models;
-
-namespace SimplPractice.Repositories.Interfaces;
+namespace SimplPractice.Interfaces;
 
 public interface ICategoriesRepository
 {

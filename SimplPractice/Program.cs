@@ -1,16 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using SimplPractice;
-using SimplPractice.Repositories.Interfaces;
-using SimplPractice.Repositories.Implementations;
-using SimplPractice.Services.Interfaces;
-using SimplPractice.Services.Implementations;
+using SimplPractice.Repositories;
+using SimplPractice.Interfaces;
+using SimplPractice.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Получение конфигурации
 var configuration = builder.Configuration;
 
-// Подключение контекста базы данных EF с SQLite
 builder.Services.AddDbContext<SportStoreDbContext>(options =>
 {
     options.UseSqlite(configuration.GetConnectionString(nameof(SportStoreDbContext)));
@@ -50,17 +47,14 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Использование Swagger в режиме разработки
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Использование авторизации (если будет, пока можно оставить)
 app.UseAuthorization();
 
-// Маршрутизация контроллеров
 app.MapControllers();
 
 app.Run();

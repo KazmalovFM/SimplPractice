@@ -1,6 +1,6 @@
 using SimplPractice.Models;
 
-namespace SimplPractice.Services.Interfaces
+namespace SimplPractice.Interfaces
 {
     public interface ISuppliersService
     {
