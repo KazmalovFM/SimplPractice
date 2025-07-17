@@ -7,7 +7,7 @@ using SimplPractice.Models;
 using SimplPractice.Interfaces;
 
 
-namespace SimplPractice.Repositories.Implementations
+namespace SimplPractice.Repositories
 {
     public class OrdersRepository : IOrdersRepository
     {

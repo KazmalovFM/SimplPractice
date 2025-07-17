@@ -7,7 +7,7 @@ using SimplPractice.Models;
 using SimplPractice.Interfaces;
 
 
-namespace SimplPractice.Implementations
+namespace SimplPractice.Repositories
 {
     public class CategoriesRepository : ICategoriesRepository
     {

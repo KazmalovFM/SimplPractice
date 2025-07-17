@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SimplPractice;
-using SimplPractice.Repositories;
 using SimplPractice.Interfaces;
+using SimplPractice.Repositories;
 using SimplPractice.Services;
 
 var builder = WebApplication.CreateBuilder(args);

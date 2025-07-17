@@ -1,7 +1,7 @@
 using SimplPractice.Models;
 using SimplPractice.Interfaces;
 
-namespace SimplPractice.Services.Implementations
+namespace SimplPractice.Services
 {
     public class OrdersService : IOrdersService
     {
