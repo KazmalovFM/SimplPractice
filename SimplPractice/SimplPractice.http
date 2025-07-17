@@ -1,0 +1,6 @@
+@SimplPractice_HostAddress = http://localhost:5185
+
+GET {{SimplPractice_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
