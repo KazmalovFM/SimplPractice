@@ -29,7 +29,7 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Получить заказ по ID.
+    /// Получить товар по ID.
     /// </summary>
     [HttpGet("{id}")]
     public async Task<ActionResult<Product>> GetProductById(Guid id)
@@ -43,17 +43,58 @@ public class ProductsController : ControllerBase
 
         return product;
     }
+
     /// <summary>
-    /// Удалить клиента.
+    /// Добавление товара.
+    /// </summary>
+    [HttpPost]
+    public async Task<ActionResult<Product>> CreateProduct(Product product)
+    {
+        product.Id = Guid.NewGuid();
+        _context.Products.Add(product);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
+    }
+
+    /// <summary>
+    /// Удалить товар.
     /// </summary>
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteClient(Guid id){
-        var client = await _context.FinAsync(id);
-        if (order == null)
+    public async Task<IActionResult> DeleteProduct(Guid id)
+    {
+        var product = await _context.Products.FindAsync(id);
+        if (product == null)
             return NotFound();
 
-        _context.Clients.Remove(client);
+        _context.Products.Remove(product);
         await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Обновление товара.
+    /// </summary>
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProduct(Guid id, Product product)
+    {
+        if (id != product.Id)
+            return BadRequest();
+
+        _context.Entry(product).State = EntityState.Modified;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!_context.Products.Any(p => p.Id == id))
+                return NotFound();
+            else
+                throw;
+        }
 
         return NoContent();
     }
