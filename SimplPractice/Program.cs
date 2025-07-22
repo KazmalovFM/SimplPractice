@@ -8,12 +8,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
+///<summary>
+/// Подключение DbContext
+/// </summary>
 builder.Services.AddDbContext<SportStoreDbContext>(options =>
 {
     options.UseSqlite(configuration.GetConnectionString(nameof(SportStoreDbContext)));
 });
 
-// Подключение репозиториев
+///<summary>
+/// Подключение репозиториев
+/// </summary>
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddScoped<IClientsRepository, ClientsRepository>();
 builder.Services.AddScoped<IDeliveriesRepository, DeliveriesRepository>();
@@ -27,7 +32,9 @@ builder.Services.AddScoped<IStoresRepository, StoresRepository>();
 builder.Services.AddScoped<ISuppliersRepository, SuppliersRepository>();
 
 
-// Подключение сервисов
+///<summary>
+/// Подключение сервисов
+/// </summary>
 builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 builder.Services.AddScoped<IClientsService, ClientsService>();
 builder.Services.AddScoped<IDeliveriesService, DeliveriesService>();
@@ -40,7 +47,9 @@ builder.Services.AddScoped<IProductsService, ProductsService>();
 builder.Services.AddScoped<IStoresService, StoresService>();
 builder.Services.AddScoped<ISuppliersService, SuppliersService>();
 
-// Добавление контроллеров и Swagger
+///<summary>
+/// добавление контроллеров и Swagger
+/// </summary>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
