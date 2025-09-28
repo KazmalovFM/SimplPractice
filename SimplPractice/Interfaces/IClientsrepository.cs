@@ -1,15 +1,39 @@
+using SimplPractice.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
-using SimplPractice.Models;
 
-namespace SimplPractice.Interfaces;
-
-public interface IClientsRepository
+namespace SimplPractice.Interfaces
 {
-    Task<List<Client>> GetClientsAsync();
-    Task<Client?> GetClientByIdAsync(Guid id);
-    Task AddClientAsync(Client client);
-    Task UpdateClientAsync(Client client);
-    Task DeleteClientAsync(Guid id);
+    /// <summary>
+    /// Интерфейс репозитория для работы с клиентами.
+    /// </summary>
+    public interface IClientsRepository
+    {
+        /// <summary>
+        /// Получить список всех клиентов.
+        /// </summary>
+        Task<List<Client>> GetClientsAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Получить клиента по идентификатору.
+        /// </summary>
+        Task<Client?> GetClientByIdAsync(Guid id, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Добавить нового клиента.
+        /// </summary>
+        Task AddClientAsync(Client client, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Обновить существующего клиента.
+        /// </summary>
+        Task UpdateClientAsync(Client client, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Удалить клиента по идентификатору.
+        /// </summary>
+        Task DeleteClientAsync(Guid id, CancellationToken cancellationToken);
+    }
 }

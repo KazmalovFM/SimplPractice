@@ -7,32 +7,32 @@ using System.Threading.Tasks;
 namespace SimplPractice.Interfaces
 {
     /// <summary>
-    /// Сервис для управления деталями заказа.
+    /// Интерфейс репозитория для работы с деталями заказов.
     /// </summary>
-    public interface IOrderDetailsService
+    public interface IOrderDetailsRepository
     {
         /// <summary>
-        /// Получает список всех деталий заказов.
+        /// Получить список всех деталей заказов.
         /// </summary>
-        Task<List<OrderDetails>> GetAllOrderDetailsAsync(CancellationToken cancellationToken);
+        Task<List<OrderDetails>> GetOrderDetailsAsync(CancellationToken cancellationToken);
 
         /// <summary>
-        /// Получает детали заказа по его уникальному идентификатору.
+        /// Получить детали заказа по его ID.
         /// </summary>
         Task<OrderDetails?> GetOrderDetailsByIdAsync(Guid id, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Добавляет новуые детали заказа.
+        /// Добавить новые детали заказа.
         /// </summary>
         Task AddOrderDetailsAsync(OrderDetails orderdetails, CancellationToken cancellationToken);
-        
+
         /// <summary>
-        /// Обновляет существующие детали заказа.
+        /// Обновить существующие детали заказа.
         /// </summary>
         Task UpdateOrderDetailsAsync(OrderDetails orderdetails, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Удаляет детали заказа по его идентификатору.
+        /// Удалить детали заказа по ID.
         /// </summary>
         Task DeleteOrderDetailsAsync(Guid id, CancellationToken cancellationToken);
     }

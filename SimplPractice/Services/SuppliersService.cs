@@ -1,40 +1,62 @@
 using SimplPractice.Models;
 using SimplPractice.Interfaces;
+using System.Threading;
 
 namespace SimplPractice.Services
 {
+    /// <summary>
+    /// Сервис для управления магазинами.
+    /// </summary>
     public class SuppliersService : ISuppliersService
     {
         private readonly ISuppliersRepository _suppliersRepository;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр сервиса магазинов.
+        /// </summary>
         public SuppliersService(ISuppliersRepository suppliersRepository)
         {
             _suppliersRepository = suppliersRepository;
         }
 
-        public async Task<List<Supplier>> GetAllSuppliersAsync()
+        /// <summary>
+        /// Получить список всех магазинов.
+        /// </summary>
+        public async Task<List<Supplier>> GetAllSuppliersAsync(CancellationToken cancellationToken)
         {
-            return await _suppliersRepository.GetSuppliersAsync();
+            return await _suppliersRepository.GetSuppliersAsync(cancellationToken);
         }
 
-        public async Task<Supplier?> GetSupplierByIdAsync(Guid id)
+        /// <summary>
+        /// Получить магазин по идентификатору.
+        /// </summary>
+        public async Task<Supplier?> GetSupplierByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _suppliersRepository.GetSupplierByIdAsync(id);
+            return await _suppliersRepository.GetSupplierByIdAsync(id, cancellationToken);
         }
 
-        public async Task AddSupplierAsync(Supplier supplier)
+        /// <summary>
+        /// Добавить новый магазин.
+        /// </summary>
+        public async Task AddSupplierAsync(Supplier supplier, CancellationToken cancellationToken)
         {
-            await _suppliersRepository.AddSupplierAsync(supplier);
+            await _suppliersRepository.AddSupplierAsync(supplier, cancellationToken);
         }
 
-        public async Task UpdateSupplierAsync(Supplier supplier)
+        /// <summary>
+        /// Обновить существующий магазин.
+        /// </summary>
+        public async Task UpdateSupplierAsync(Supplier supplier, CancellationToken cancellationToken)
         {
-            await _suppliersRepository.UpdateSupplierAsync(supplier);
+            await _suppliersRepository.UpdateSupplierAsync(supplier, cancellationToken);
         }
 
-        public async Task DeleteSupplierAsync(Guid id)
+        /// <summary>
+        /// Удалить магазин по идентификатору.
+        /// </summary>
+        public async Task DeleteSupplierAsync(Guid id, CancellationToken cancellationToken)
         {
-            await _suppliersRepository.DeleteSupplierAsync(id);
+            await _suppliersRepository.DeleteSupplierAsync(id, cancellationToken);
         }
     }
 }

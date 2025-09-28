@@ -1,56 +1,70 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using SimplPractice;
 using SimplPractice.Models;
 using SimplPractice.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 
 namespace SimplPractice.Repositories
 {
+    /// <summary>
+    /// Реализация репозитория магазинаов.
+    /// </summary>
     public class StoresRepository : IStoresRepository
     {
         private readonly SportStoreDbContext _dbContext;
 
+        /// <summary>
+        /// Создает экземпляр репозитория магазинов.
+        /// </summary>
         public StoresRepository(SportStoreDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<List<Store>> GetStoresAsync()
+        /// <summary>
+        /// Получить список всех магазинов.
+        /// </summary>
+        public Task<List<Store>> GetStoresAsync(CancellationToken cancellationToken) =>
+            _dbContext.Stores.AsNoTracking().ToListAsync(cancellationToken);
+
+
+        /// <summary>
+        /// Получить магазин по идентификатору.
+        /// </summary>
+        public Task<Store?> GetStoreByIdAsync(Guid id, CancellationToken cancellationToken) =>
+            _dbContext.Stores.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+
+        /// <summary>
+        /// Добавить новый магазин.
+        /// </summary>
+        public async Task AddStoreAsync(Store store, CancellationToken cancellationToken)
         {
-            return await _dbContext.Stores
-                .AsNoTracking()
-                .ToListAsync();
+            await _dbContext.Stores.AddAsync(store, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Store?> GetStoreByIdAsync(Guid id)
-        {
-            return await _dbContext.Stores
-                .AsNoTracking()
-                .FirstOrDefaultAsync(st => st.Id == id);
-        }
-
-        public async Task AddStoreAsync(Store store)
-        {
-            await _dbContext.Stores.AddAsync(store);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateStoreAsync(Store store)
+        /// <summary>
+        /// Обновить существующий магазин.
+        /// </summary>
+        public async Task UpdateStoreAsync(Store store, CancellationToken cancellationToken)
         {
             _dbContext.Stores.Update(store);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteStoreAsync(Guid id)
+        /// <summary>
+        /// Удалить магазин по идентификатору.
+        /// </summary>
+        public async Task DeleteStoreAsync(Guid id, CancellationToken cancellationToken)
         {
-            var store = await _dbContext.Stores.FindAsync(id);
+            var store = await _dbContext.Stores.FindAsync(new object[] { id }, cancellationToken);
             if (store != null)
             {
                 _dbContext.Stores.Remove(store);
-                await _dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync(cancellationToken);
             }
         }
     }

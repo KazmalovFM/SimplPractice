@@ -1,40 +1,62 @@
 using SimplPractice.Models;
 using SimplPractice.Interfaces;
+using System.Threading;
 
 namespace SimplPractice.Services
 {
+    /// <summary>
+    /// Сервис для управления деталями заказа.
+    /// </summary>
     public class OrderDetailsService : IOrderDetailsService
     {
         private readonly IOrderDetailsRepository _orderdetailsRepository;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр сервиса деталей заказа.
+        /// </summary>
         public OrderDetailsService(IOrderDetailsRepository orderdetailsRepository)
         {
             _orderdetailsRepository = orderdetailsRepository;
         }
 
-        public async Task<List<OrderDetails>> GetAllOrderDetailsAsync()
+        /// <summary>
+        /// Получить список всех деталей заказа.
+        /// </summary>
+        public async Task<List<OrderDetails>> GetAllOrderDetailsAsync(CancellationToken cancellationToken)
         {
-            return await _orderdetailsRepository.GetOrderDetailsAsync();
+            return await _orderdetailsRepository.GetOrderDetailsAsync(cancellationToken);
         }
 
-        public async Task<OrderDetails?> GetOrderDetailsByIdAsync(Guid id)
+        /// <summary>
+        /// Получить детали заказа по идентификатору.
+        /// </summary>
+        public async Task<OrderDetails?> GetOrderDetailsByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _orderdetailsRepository.GetOrderDetailsByIdAsync(id);
+            return await _orderdetailsRepository.GetOrderDetailsByIdAsync(id, cancellationToken);
         }
 
-        public async Task AddOrderDetailsAsync(OrderDetails orderdetails)
+        /// <summary>
+        /// Добавить новые детали заказа.
+        /// </summary>
+        public async Task AddOrderDetailsAsync(OrderDetails orderdetails, CancellationToken cancellationToken)
         {
-            await _orderdetailsRepository.AddOrderDetailsAsync(orderdetails);
+            await _orderdetailsRepository.AddOrderDetailsAsync(orderdetails, cancellationToken);
         }
 
-        public async Task UpdateOrderDetailsAsync(OrderDetails orderdetails)
+        /// <summary>
+        /// Обновить существующие детали заказа.
+        /// </summary>
+        public async Task UpdateOrderDetailsAsync(OrderDetails orderdetails, CancellationToken cancellationToken)
         {
-            await _orderdetailsRepository.UpdateOrderDetailsAsync(orderdetails);
+            await _orderdetailsRepository.UpdateOrderDetailsAsync(orderdetails, cancellationToken);
         }
 
-        public async Task DeleteOrderDetailsAsync(Guid id)
+        /// <summary>
+        /// Удалить детали заказа по идентификатору.
+        /// </summary>
+        public async Task DeleteOrderDetailsAsync(Guid id, CancellationToken cancellationToken)
         {
-            await _orderdetailsRepository.DeleteOrderDetailsAsync(id);
+            await _orderdetailsRepository.DeleteOrderDetailsAsync(id, cancellationToken);
         }
     }
 }

@@ -11,7 +11,7 @@ using SimplPractice;
 namespace SimplPractice.Migrations
 {
     [DbContext(typeof(SportStoreDbContext))]
-    [Migration("20250717091653_InitialCreate")]
+    [Migration("20250928131455_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

@@ -1,14 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using SimplPractice;
-using SimplPractice.Interfaces;
-using SimplPractice.Repositories;
-using SimplPractice.Services;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-///<summary>
+/// <summary>
 /// Подключение DbContext
 /// </summary>
 builder.Services.AddDbContext<SportStoreDbContext>(options =>
@@ -16,39 +14,32 @@ builder.Services.AddDbContext<SportStoreDbContext>(options =>
     options.UseSqlite(configuration.GetConnectionString(nameof(SportStoreDbContext)));
 });
 
-///<summary>
-/// Подключение репозиториев
+/// <summary>
+/// Автоматическая регистрация всех Repository и Service
 /// </summary>
-builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
-builder.Services.AddScoped<IClientsRepository, ClientsRepository>();
-builder.Services.AddScoped<IDeliveriesRepository, DeliveriesRepository>();
-builder.Services.AddScoped<IDeliveryStatusesRepository, DeliveryStatusesRepository>();
-builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
-builder.Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
-builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
-builder.Services.AddScoped<IPaymentsRepository, PaymentsRepository>();
-builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
-builder.Services.AddScoped<IStoresRepository, StoresRepository>();
-builder.Services.AddScoped<ISuppliersRepository, SuppliersRepository>();
+RegisterByEnding(builder.Services, "Repository");
+RegisterByEnding(builder.Services, "Service");
 
-
-///<summary>
-/// Подключение сервисов
+/// <summary>
+/// Метод автоматической регистрации классов по суффиксу
 /// </summary>
-builder.Services.AddScoped<ICategoriesService, CategoriesService>();
-builder.Services.AddScoped<IClientsService, ClientsService>();
-builder.Services.AddScoped<IDeliveriesService, DeliveriesService>();
-builder.Services.AddScoped<IDeliveryStatusesService, DeliveryStatusesService>();
-builder.Services.AddScoped<IEmployeesService, EmployeesService>();
-builder.Services.AddScoped<IOrderDetailsService, OrderDetailsService>();
-builder.Services.AddScoped<IOrdersService, OrdersService>();
-builder.Services.AddScoped<IPaymentsService, PaymentsService>();
-builder.Services.AddScoped<IProductsService, ProductsService>();
-builder.Services.AddScoped<IStoresService, StoresService>();
-builder.Services.AddScoped<ISuppliersService, SuppliersService>();
+void RegisterByEnding(IServiceCollection services, string ending)
+{
+    var assembly = Assembly.GetExecutingAssembly();
 
-///<summary>
-/// добавление контроллеров и Swagger
+    foreach (var type in assembly.GetTypes()
+        .Where(t => t.IsClass && !t.IsAbstract && t.Name.EndsWith(ending)))
+    {
+        var interfaceType = type.GetInterface($"I{type.Name}");
+        if (interfaceType != null)
+        {
+            services.AddScoped(interfaceType, type);
+        }
+    }
+}
+
+/// <summary>
+/// Добавление контроллеров и Swagger
 /// </summary>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -63,7 +54,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

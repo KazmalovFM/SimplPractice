@@ -1,40 +1,62 @@
 using SimplPractice.Models;
 using SimplPractice.Interfaces;
+using System.Threading;
 
 namespace SimplPractice.Services
 {
+    /// <summary>
+    /// Сервис для управления клиентами.
+    /// </summary>
     public class ClientsService : IClientsService
     {
         private readonly IClientsRepository _clientsRepository;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр сервиса клиентов.
+        /// </summary>
         public ClientsService(IClientsRepository clientsRepository)
         {
             _clientsRepository = clientsRepository;
         }
 
-        public async Task<List<Client>> GetAllClientsAsync()
+        /// <summary>
+        /// Получить список всех клиентов.
+        /// </summary>
+        public async Task<List<Client>> GetAllClientsAsync(CancellationToken cancellationToken)
         {
-            return await _clientsRepository.GetClientsAsync();
+            return await _clientsRepository.GetClientsAsync(cancellationToken);
         }
 
-        public async Task<Client?> GetClientByIdAsync(Guid id)
+        /// <summary>
+        /// Получить клиента по идентификатору.
+        /// </summary>
+        public async Task<Client?> GetClientByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _clientsRepository.GetClientByIdAsync(id);
+            return await _clientsRepository.GetClientByIdAsync(id, cancellationToken);
         }
 
-        public async Task AddClientAsync(Client client)
+        /// <summary>
+        /// Добавить нового клиента.
+        /// </summary>
+        public async Task AddClientAsync(Client client, CancellationToken cancellationToken)
         {
-            await _clientsRepository.AddClientAsync(client);
+            await _clientsRepository.AddClientAsync(client, cancellationToken);
         }
 
-        public async Task UpdateClientAsync(Client client)
+        /// <summary>
+        /// Обновить существующего клиента.
+        /// </summary>
+        public async Task UpdateClientAsync(Client client, CancellationToken cancellationToken)
         {
-            await _clientsRepository.UpdateClientAsync(client);
+            await _clientsRepository.UpdateClientAsync(client, cancellationToken);
         }
 
-        public async Task DeleteClientAsync(Guid id)
+        /// <summary>
+        /// Удалить клиента по идентификатору.
+        /// </summary>
+        public async Task DeleteClientAsync(Guid id, CancellationToken cancellationToken)
         {
-            await _clientsRepository.DeleteClientAsync(id);
+            await _clientsRepository.DeleteClientAsync(id, cancellationToken);
         }
     }
 }
